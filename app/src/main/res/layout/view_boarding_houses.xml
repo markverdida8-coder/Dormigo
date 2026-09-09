@@ -116,12 +116,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/priceContainer"
                         android:text="@string/sampaguita_residences"
                         android:textColor="#1A1A1A"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
+                        android:id="@+id/priceContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

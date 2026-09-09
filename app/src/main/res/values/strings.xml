@@ -40,7 +40,8 @@
     <string name="school_campus_hint">School / Campus</string>
     <string name="mobile_number_hint">+63</string>
     <string name="near_bulsu">Near Bulacan State University</string>
-    <string name="greeting_Jimuel">Kumusta, Jimuel 👋</string>
+    <string name="greeting_Jimuel">Kumusta, Jimuel</string>
+    <string name="waving_hand">👋</string>
     <string name="user_full_name">Jimuel Destura</string>
     <string name="user_initials">JR</string>
     <string name="user_details">BS Information Technology · Instructor</string>
@@ -150,4 +151,21 @@
     <string name="inquire">Inquire</string>
     <string name="verified_landlord">Verified landlord</string>
     <string name="desc_filter">Filter</string>
+    <string name="filter">Filter</string>
+    <string name="budget_range">Budget range</string>
+    <string name="min_pesos">Min ₱</string>
+    <string name="max_pesos">Max ₱</string>
+    <string name="room_type">Room type</string>
+    <string name="single">Single</string>
+    <string name="shared">Shared</string>
+    <string name="studio">Studio</string>
+    <string name="distance_from_campus">Distance from campus</string>
+    <string name="less_than_500m">&lt; 500m</string>
+    <string name="less_than_1km">&lt; 1km</string>
+    <string name="any">Any</string>
+    <string name="aircon">Aircon</string>
+    <string name="parking">Parking</string>
+    <string name="reset">Reset</string>
+    <string name="apply_filters">Apply Filters</string>
+    <string name="desc_close_filter">Close filter</string>
 </resources>

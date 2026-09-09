@@ -8,6 +8,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,10 +27,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -74,6 +79,12 @@ public class HomeActivity extends AppCompatActivity {
     private void bindViews() {
         locationLabel = findViewById(R.id.locationLabel);
         bottomNav = findViewById(R.id.bottomNav);
+        
+        TextView wavingHand = findViewById(R.id.wavingHand);
+        if (wavingHand != null) {
+            Animation wave = AnimationUtils.loadAnimation(this, R.anim.wave);
+            wavingHand.startAnimation(wave);
+        }
         
         EditText homeSearchInput = findViewById(R.id.homeSearchInput);
         ImageView btnSearchSubmit = findViewById(R.id.btnSearchSubmit);
@@ -176,26 +187,39 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchCurrentLocationLabel() {
         locationLabel.setText(R.string.getting_location);
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                updateLocationLabel(location);
-            } else {
-                locationLabel.setText(R.string.location_unavailable);
-            }
-        }).addOnFailureListener(this, e -> locationLabel.setText(R.string.location_unavailable));
+        CancellationTokenSource cts = new CancellationTokenSource();
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.getToken())
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        updateLocationLabel(location);
+                    } else {
+                        locationLabel.setText(R.string.location_unavailable);
+                    }
+                })
+                .addOnFailureListener(this, e -> locationLabel.setText(R.string.location_unavailable));
     }
 
     private void updateLocationLabel(Location location) {
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(
-                    location.getLatitude(), location.getLongitude(), 1);
-
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                locationLabel.setText(buildNearestPlaceLabel(address));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1, addresses -> {
+                    if (!addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        runOnUiThread(() -> locationLabel.setText(buildNearestPlaceLabel(address)));
+                    } else {
+                        runOnUiThread(() -> locationLabel.setText(R.string.location_unavailable));
+                    }
+                });
             } else {
-                locationLabel.setText(R.string.location_unavailable);
+                // Fallback for older versions
+                List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    locationLabel.setText(buildNearestPlaceLabel(address));
+                } else {
+                    locationLabel.setText(R.string.location_unavailable);
+                }
             }
         } catch (Exception e) {
             locationLabel.setText(R.string.location_unavailable);
@@ -203,12 +227,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private String buildNearestPlaceLabel(Address address) {
-        String feature = address.getFeatureName();
-        String subLocality = address.getSubLocality();
-        String locality = address.getLocality();
+        String subLocality = address.getSubLocality(); // Barangay
+        String locality = address.getLocality();       // City/Municipality
 
-        String place = feature != null ? feature : (subLocality != null ? subLocality : locality);
-        return getString(R.string.near_location, place != null ? place : getString(R.string.your_location));
+        StringBuilder sb = new StringBuilder();
+        if (subLocality != null && !subLocality.isEmpty()) {
+            sb.append(subLocality);
+        }
+        if (locality != null && !locality.isEmpty()) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(locality);
+        }
+
+        String place = sb.length() > 0 ? sb.toString() : null;
+        return getString(R.string.near_location, Objects.requireNonNullElseGet(place, () -> getString(R.string.your_location)));
     }
 
     @Override
@@ -228,6 +260,7 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressWarnings("deprecation")
     private void performSearch(String query) {
         Intent intent = new Intent(HomeActivity.this, BoardingHouseListingsActivity.class);
         intent.putExtra("SEARCH_QUERY", query);

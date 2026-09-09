@@ -23,10 +23,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
+import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class BoardingHouseListingsActivity extends AppCompatActivity {
 
@@ -83,6 +87,7 @@ public class BoardingHouseListingsActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_explore);
@@ -104,13 +109,14 @@ public class BoardingHouseListingsActivity extends AppCompatActivity {
                 return true;
             }
             // Explore, Chats, Requests - stay here for now or show toast
-            if (id != R.id.nav_explore) {
+            if (id != R.id.nav_explore && item.getTitle() != null) {
                 showToast(item.getTitle().toString());
             }
             return id == R.id.nav_explore;
         });
     }
 
+    @SuppressWarnings("deprecation")
     private void setupClickListeners() {
         View cardListing1 = findViewById(R.id.cardListing1);
         if (cardListing1 != null) {
@@ -119,6 +125,105 @@ public class BoardingHouseListingsActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             });
+        }
+
+        View btnFilter = findViewById(R.id.btnFilter);
+        if (btnFilter != null) {
+            btnFilter.setOnClickListener(v -> showFilterBottomSheet());
+        }
+    }
+
+    private void showFilterBottomSheet() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.filter_bottom_sheet, findViewById(R.id.mainLayout), false);
+        bottomSheetDialog.setContentView(view);
+
+        // Close button
+        View btnClose = view.findViewById(R.id.btnCloseFilter);
+        if (btnClose != null) {
+            btnClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        }
+
+        // Apply filters button
+        View btnApply = view.findViewById(R.id.btnApplyFilters);
+        if (btnApply != null) {
+            btnApply.setOnClickListener(v -> {
+                showToast("Filters applied");
+                bottomSheetDialog.dismiss();
+            });
+        }
+
+        // Reset filters button
+        View btnReset = view.findViewById(R.id.btnResetFilters);
+        if (btnReset != null) {
+            btnReset.setOnClickListener(v -> {
+                EditText min = view.findViewById(R.id.minBudgetInput);
+                EditText max = view.findViewById(R.id.maxBudgetInput);
+                if (min != null) min.setText("");
+                if (max != null) max.setText("");
+
+                int[] allChips = {
+                    R.id.chipSingle, R.id.chipShared, R.id.chipStudio,
+                    R.id.chip500m, R.id.chip1km, R.id.chipAnyDistance,
+                    R.id.chipWifi, R.id.chipAircon, R.id.chipParking
+                };
+                for (int id : allChips) {
+                    View chip = view.findViewById(id);
+                    if (chip != null) {
+                        chip.setSelected(false);
+                        if (chip instanceof TextView) {
+                            ((TextView) chip).setTextColor(0xFF1A1A1A);
+                        }
+                    }
+                }
+                showToast("Filters reset");
+            });
+        }
+
+        // Setup selectable chips
+        setupSingleChipSelection(view, R.id.chipSingle, R.id.chipShared, R.id.chipStudio);
+        setupSingleChipSelection(view, R.id.chip500m, R.id.chip1km, R.id.chipAnyDistance);
+        setupMultiChipSelection(view, R.id.chipWifi, R.id.chipAircon, R.id.chipParking);
+
+        bottomSheetDialog.show();
+    }
+
+    private void setupSingleChipSelection(View parent, int... chipIds) {
+        for (int id : chipIds) {
+            View chip = parent.findViewById(id);
+            if (chip != null) {
+                chip.setOnClickListener(v -> {
+                    // Deselect all others in the group
+                    for (int otherId : chipIds) {
+                        View otherChip = parent.findViewById(otherId);
+                        if (otherChip != null) {
+                            otherChip.setSelected(false);
+                            if (otherChip instanceof TextView) {
+                                ((TextView) otherChip).setTextColor(0xFF1A1A1A);
+                            }
+                        }
+                    }
+                    // Select this one
+                    v.setSelected(true);
+                    if (v instanceof TextView) {
+                        ((TextView) v).setTextColor(0xFFFFFFFF);
+                    }
+                });
+            }
+        }
+    }
+
+    private void setupMultiChipSelection(View parent, int... chipIds) {
+        for (int id : chipIds) {
+            View chip = parent.findViewById(id);
+            if (chip != null) {
+                chip.setOnClickListener(v -> {
+                    v.setSelected(!v.isSelected());
+                    if (v instanceof TextView) {
+                        ((TextView) v).setTextColor(v.isSelected() ? 0xFFFFFFFF : 0xFF1A1A1A);
+                    }
+                });
+            }
         }
     }
 
@@ -143,32 +248,48 @@ public class BoardingHouseListingsActivity extends AppCompatActivity {
             locationLabel.setText(R.string.getting_location);
         }
 
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                updateLocationLabel(location);
-            } else if (locationLabel != null) {
-                locationLabel.setText(R.string.location_unavailable);
-            }
-        }).addOnFailureListener(this, e -> {
-            if (locationLabel != null) {
-                locationLabel.setText(R.string.location_unavailable);
-            }
-        });
+        CancellationTokenSource cts = new CancellationTokenSource();
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.getToken())
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        updateLocationLabel(location);
+                    } else if (locationLabel != null) {
+                        locationLabel.setText(R.string.location_unavailable);
+                    }
+                })
+                .addOnFailureListener(this, e -> {
+                    if (locationLabel != null) {
+                        locationLabel.setText(R.string.location_unavailable);
+                    }
+                });
     }
 
     private void updateLocationLabel(Location location) {
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(
-                    location.getLatitude(), location.getLongitude(), 1);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1, addresses -> {
+                    if (!addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        if (locationLabel != null) {
+                            runOnUiThread(() -> locationLabel.setText(buildNearestPlaceLabel(address)));
+                        }
+                    } else if (locationLabel != null) {
+                        runOnUiThread(() -> locationLabel.setText(R.string.location_unavailable));
+                    }
+                });
+            } else {
+                List<Address> addresses = geocoder.getFromLocation(
+                        location.getLatitude(), location.getLongitude(), 1);
 
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                if (locationLabel != null) {
-                    locationLabel.setText(buildNearestPlaceLabel(address));
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address address = addresses.get(0);
+                    if (locationLabel != null) {
+                        locationLabel.setText(buildNearestPlaceLabel(address));
+                    }
+                } else if (locationLabel != null) {
+                    locationLabel.setText(R.string.location_unavailable);
                 }
-            } else if (locationLabel != null) {
-                locationLabel.setText(R.string.location_unavailable);
             }
         } catch (Exception e) {
             if (locationLabel != null) {
@@ -178,12 +299,20 @@ public class BoardingHouseListingsActivity extends AppCompatActivity {
     }
 
     private String buildNearestPlaceLabel(Address address) {
-        String feature = address.getFeatureName();
-        String subLocality = address.getSubLocality();
-        String locality = address.getLocality();
+        String subLocality = address.getSubLocality(); // Barangay
+        String locality = address.getLocality();       // City/Municipality
 
-        String place = feature != null ? feature : (subLocality != null ? subLocality : locality);
-        return getString(R.string.near_location, place != null ? place : getString(R.string.your_location));
+        StringBuilder sb = new StringBuilder();
+        if (subLocality != null && !subLocality.isEmpty()) {
+            sb.append(subLocality);
+        }
+        if (locality != null && !locality.isEmpty()) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(locality);
+        }
+
+        String place = sb.length() > 0 ? sb.toString() : null;
+        return getString(R.string.near_location, Objects.requireNonNullElseGet(place, () -> getString(R.string.your_location)));
     }
 
     @Override

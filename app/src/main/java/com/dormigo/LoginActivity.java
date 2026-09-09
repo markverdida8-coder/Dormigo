@@ -1,6 +1,7 @@
 package com.dormigo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -24,6 +25,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check if user is already logged in
+        SharedPreferences prefs = getSharedPreferences("DormigoPrefs", MODE_PRIVATE);
+        if (prefs.getBoolean("isLoggedIn", false)) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_page);
 
@@ -79,11 +90,17 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Signed in as " + (isStudent ? "Student" : "Landlord"), Toast.LENGTH_SHORT).show();
+                
+                // Save login state
+                SharedPreferences.Editor editor = getSharedPreferences("DormigoPrefs", MODE_PRIVATE).edit();
+                editor.putBoolean("isLoggedIn", true);
+                editor.apply();
+
                 // Navigate to Home Page
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overrideActivityFade();
             }
         });
 
@@ -91,8 +108,18 @@ public class LoginActivity extends AppCompatActivity {
         createAccount.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            overrideActivitySlide();
         });
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivityFade() {
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivitySlide() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void togglePassword(EditText editText, ImageView imageView, boolean visible) {

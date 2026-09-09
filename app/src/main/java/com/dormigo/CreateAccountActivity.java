@@ -1,6 +1,7 @@
 package com.dormigo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -57,13 +58,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         // Back Button Logic
         btnBack.setOnClickListener(v -> {
             finish();
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            overrideActivitySlideBack();
         });
 
         // Sign In Link Logic
         signInLink.setOnClickListener(v -> {
             finish();
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            overrideActivitySlideBack();
         });
 
         // Dropdown Logic
@@ -83,7 +84,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LandlordRegistrationActivity.class);
             startActivity(intent);
             finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            overrideActivityFade();
         });
 
         // Password Visibility Logic
@@ -108,12 +109,27 @@ public class CreateAccountActivity extends AppCompatActivity {
                 String role = isStudent ? "Student" : "Landlord";
                 Toast.makeText(this, "Account created as " + role, Toast.LENGTH_SHORT).show();
                 
+                // Save login state
+                SharedPreferences.Editor editor = getSharedPreferences("DormigoPrefs", MODE_PRIVATE).edit();
+                editor.putBoolean("isLoggedIn", true);
+                editor.apply();
+
                 // Navigate to Home Page
                 Intent intent = new Intent(CreateAccountActivity.this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivitySlideBack() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivityFade() {
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void togglePassword(EditText editText, ImageView imageView, boolean visible) {

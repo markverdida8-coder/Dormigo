@@ -41,6 +41,7 @@ public class ViewBoardingHouseActivity extends AppCompatActivity {
         setupClickListeners();
     }
 
+    @SuppressWarnings("deprecation")
     private void setupClickListeners() {
         ImageView btnBack = findViewById(R.id.btnBack);
         TextView btnMessage = findViewById(R.id.btnMessage);

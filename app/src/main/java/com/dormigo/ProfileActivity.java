@@ -1,12 +1,12 @@
 package com.dormigo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -42,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
         setupClickListeners();
     }
 
+    @SuppressWarnings("deprecation")
     private void setupBottomNavigation() {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         bottomNav.setSelectedItemId(R.id.nav_profile);
@@ -72,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressWarnings("deprecation")
     private void setupClickListeners() {
         LinearLayout btnTransactionHistory = findViewById(R.id.btnTransactionHistory);
         LinearLayout btnNotifications = findViewById(R.id.btnNotifications);
@@ -89,6 +91,11 @@ public class ProfileActivity extends AppCompatActivity {
         btnMyReviews.setOnClickListener(v -> showToast("My Reviews"));
 
         btnSignOut.setOnClickListener(v -> {
+            // Clear login state
+            SharedPreferences.Editor editor = getSharedPreferences("DormigoPrefs", MODE_PRIVATE).edit();
+            editor.putBoolean("isLoggedIn", false);
+            editor.apply();
+
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

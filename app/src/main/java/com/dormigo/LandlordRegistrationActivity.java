@@ -1,6 +1,7 @@
 package com.dormigo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -76,7 +77,7 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> {
                 finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overrideActivityFade();
             });
         }
 
@@ -87,7 +88,7 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overrideActivityFade();
             });
         }
 
@@ -133,6 +134,11 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Landlord account created successfully!", Toast.LENGTH_SHORT).show();
                     
+                    // Save login state
+                    SharedPreferences.Editor editor = getSharedPreferences("DormigoPrefs", MODE_PRIVATE).edit();
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
                     // Navigate to Home Page
                     Intent intent = new Intent(LandlordRegistrationActivity.this, HomeActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -145,9 +151,19 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
         if (signInLink != null) {
             signInLink.setOnClickListener(v -> {
                 finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                overrideActivitySlideBack();
             });
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivityFade() {
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void overrideActivitySlideBack() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private void togglePassword(EditText editText, ImageView imageView, boolean visible) {
@@ -164,29 +180,30 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
 
     private String getFileName(Uri uri) {
         if (uri == null) return "Unknown file";
-        
-        String fileName = null;
-        if ("content".equals(uri.getScheme())) {
+
+        String name = null;
+        String scheme = uri.getScheme();
+        if ("content".equals(scheme)) {
             try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     if (nameIndex != -1) {
-                        fileName = cursor.getString(nameIndex);
+                        name = cursor.getString(nameIndex);
                     }
                 }
             }
         }
-        
-        if (fileName == null && uri.getPath() != null) {
+
+        if (name == null && uri.getPath() != null) {
             String path = uri.getPath();
             int cut = path.lastIndexOf('/');
             if (cut != -1) {
-                fileName = path.substring(cut + 1);
+                name = path.substring(cut + 1);
             } else {
-                fileName = path;
+                name = path;
             }
         }
-        
-        return fileName != null ? fileName : "Unknown file";
+
+        return Objects.requireNonNullElse(name, "Unknown file");
     }
 }
