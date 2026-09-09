@@ -74,7 +74,10 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
 
         // Back Button Logic
         if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
+            btnBack.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            });
         }
 
         // Switch to Student Role
@@ -84,6 +87,7 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             });
         }
 
@@ -91,14 +95,14 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
         if (togglePasswordVisibility != null) {
             togglePasswordVisibility.setOnClickListener(v -> {
                 isPasswordVisible = !isPasswordVisible;
-                togglePassword(passwordInput, isPasswordVisible);
+                togglePassword(passwordInput, togglePasswordVisibility, isPasswordVisible);
             });
         }
 
         if (toggleConfirmPasswordVisibility != null) {
             toggleConfirmPasswordVisibility.setOnClickListener(v -> {
                 isConfirmPasswordVisible = !isConfirmPasswordVisible;
-                togglePassword(confirmPasswordInput, isConfirmPasswordVisible);
+                togglePassword(confirmPasswordInput, toggleConfirmPasswordVisibility, isConfirmPasswordVisible);
             });
         }
 
@@ -128,46 +132,61 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
                     Toast.makeText(this, "Please upload the required documents", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Landlord account created successfully!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    
+                    // Navigate to Home Page
+                    Intent intent = new Intent(LandlordRegistrationActivity.this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             });
         }
 
         // Sign In Link
         if (signInLink != null) {
-            signInLink.setOnClickListener(v -> finish());
+            signInLink.setOnClickListener(v -> {
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            });
         }
     }
 
-    private void togglePassword(EditText editText, boolean visible) {
-        if (editText == null) return;
+    private void togglePassword(EditText editText, ImageView imageView, boolean visible) {
+        if (editText == null || imageView == null) return;
         if (visible) {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            imageView.setImageResource(R.drawable.ic_eye_off);
         } else {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            imageView.setImageResource(R.drawable.ic_eye);
         }
         editText.setSelection(editText.getText().length());
     }
 
     private String getFileName(Uri uri) {
-        String result = null;
-        if (uri != null && "content".equals(uri.getScheme())) {
+        if (uri == null) return "Unknown file";
+        
+        String fileName = null;
+        if ("content".equals(uri.getScheme())) {
             try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     if (nameIndex != -1) {
-                        result = cursor.getString(nameIndex);
+                        fileName = cursor.getString(nameIndex);
                     }
                 }
             }
         }
-        if (result == null && uri != null && uri.getPath() != null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
+        
+        if (fileName == null && uri.getPath() != null) {
+            String path = uri.getPath();
+            int cut = path.lastIndexOf('/');
             if (cut != -1) {
-                result = result.substring(cut + 1);
+                fileName = path.substring(cut + 1);
+            } else {
+                fileName = path;
             }
         }
-        return result != null ? result : "Unknown file";
+        
+        return fileName != null ? fileName : "Unknown file";
     }
 }

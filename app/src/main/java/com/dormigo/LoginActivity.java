@@ -16,7 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordVisible = false;
     private boolean isStudent = true;
@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_page);
 
-        View mainView = findViewById(R.id.login_page);
-        if (mainView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+        // Adjust for system bars
+        View root = findViewById(R.id.login_page);
+        if (root != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
@@ -39,11 +40,12 @@ public class MainActivity extends AppCompatActivity {
         // Initialize UI components
         LinearLayout roleStudent = findViewById(R.id.roleStudent);
         LinearLayout roleLandlord = findViewById(R.id.roleLandlord);
-        ImageView togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
+        EditText emailInput = findViewById(R.id.emailInput);
         EditText passwordInput = findViewById(R.id.passwordInput);
+        TextView forgotPassword = findViewById(R.id.forgotPassword);
+        ImageView togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
         TextView btnSignIn = findViewById(R.id.btnSignIn);
         TextView createAccount = findViewById(R.id.createAccount);
-        TextView forgotPassword = findViewById(R.id.forgotPassword);
 
         // Role Selection Logic
         roleStudent.setOnClickListener(v -> {
@@ -56,42 +58,58 @@ public class MainActivity extends AppCompatActivity {
             updateRoleUI(roleStudent, roleLandlord);
         });
 
+        // Forgot Password Logic
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
         // Password Visibility Logic
         togglePasswordVisibility.setOnClickListener(v -> {
             isPasswordVisible = !isPasswordVisible;
-            if (isPasswordVisible) {
-                passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            } else {
-                passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            }
-            togglePasswordVisibility.setImageResource(R.drawable.ic_eye);
-            passwordInput.setSelection(passwordInput.getText().length());
+            togglePassword(passwordInput, togglePasswordVisibility, isPasswordVisible);
         });
 
         // Sign In Logic
         btnSignIn.setOnClickListener(v -> {
-            String role = isStudent ? "Student" : "Landlord";
-            Toast.makeText(this, "Signing in as " + role, Toast.LENGTH_SHORT).show();
+            String email = emailInput.getText().toString();
+            String pass = passwordInput.getText().toString();
+
+            if (email.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Signed in as " + (isStudent ? "Student" : "Landlord"), Toast.LENGTH_SHORT).show();
+                // Navigate to Home Page
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
         });
 
-        // Forgot Password Logic
-        forgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ForgotPasswordActivity.class);
-            startActivity(intent);
-        });
-
-        // Create Account Navigation
+        // Create Account Logic
         createAccount.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CreateAccountActivity.class);
+            Intent intent = new Intent(LoginActivity.this, CreateAccountActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
+    }
+
+    private void togglePassword(EditText editText, ImageView imageView, boolean visible) {
+        if (visible) {
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            imageView.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            imageView.setImageResource(R.drawable.ic_eye);
+        }
+        editText.setSelection(editText.getText().length());
     }
 
     private void updateRoleUI(LinearLayout studentLayout, LinearLayout landlordLayout) {
         if (isStudent) {
             studentLayout.setBackgroundResource(R.drawable.bg_role_selected);
             landlordLayout.setBackgroundResource(R.drawable.bg_role_unselected);
-            // Also update icon tints if needed, but let's stick to background first
         } else {
             studentLayout.setBackgroundResource(R.drawable.bg_role_unselected);
             landlordLayout.setBackgroundResource(R.drawable.bg_role_selected);

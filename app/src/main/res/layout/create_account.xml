@@ -41,7 +41,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="@drawable/bg_logo_square"
-                        android:contentDescription="BH Finder logo"
+                        android:contentDescription="@string/desc_bh_finder_logo"
                         android:padding="7dp"
                         android:src="@drawable/ic_home_logo"
                         app:tint="#FFFFFF" />
@@ -91,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <!-- Student option (selected state) -->
@@ -109,7 +110,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:contentDescription="Student"
+                            android:contentDescription="@string/desc_student"
                             android:src="@drawable/ic_graduation_cap"
                             app:tint="#1B5E4C" />
 
@@ -148,7 +149,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:contentDescription="Landlord"
+                            android:contentDescription="@string/desc_landlord"
                             android:src="@drawable/ic_key"
                             app:tint="#6E6E73" />
 
@@ -178,6 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -203,6 +205,7 @@
                             android:background="@drawable/bg_input_field"
                             android:hint="@string/first_name"
                             android:inputType="textPersonName"
+                            android:autofillHints="personGivenName"
                             android:paddingHorizontal="14dp"
                             android:singleLine="true"
                             android:textColor="#1A1A1A"
@@ -234,6 +237,7 @@
                             android:background="@drawable/bg_input_field"
                             android:hint="@string/last_name"
                             android:inputType="textPersonName"
+                            android:autofillHints="personFamilyName"
                             android:paddingHorizontal="14dp"
                             android:singleLine="true"
                             android:textColor="#1A1A1A"
@@ -262,6 +266,7 @@
                     android:background="@drawable/bg_input_field"
                     android:hint="@string/middle_name_optional"
                     android:inputType="textPersonName"
+                    android:autofillHints="personMiddleName"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
                     android:textColor="#1A1A1A"
@@ -286,6 +291,7 @@
                     android:background="@drawable/bg_input_field"
                     android:hint="@string/school_email"
                     android:inputType="textEmailAddress"
+                    android:autofillHints="emailAddress"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
                     android:textColor="#1A1A1A"
@@ -348,6 +354,7 @@
                     android:background="@drawable/bg_input_field"
                     android:hint="@string/mobile_number_hint"
                     android:inputType="phone"
+                    android:autofillHints="phoneNumber"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
                     android:textColor="#1A1A1A"
@@ -376,6 +383,7 @@
                         android:background="@drawable/bg_input_field"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        android:autofillHints="password"
                         android:paddingStart="14dp"
                         android:paddingEnd="44dp"
                         android:singleLine="true"
@@ -390,7 +398,7 @@
                         android:layout_gravity="center_vertical|end"
                         android:layout_marginEnd="14dp"
                         android:clickable="true"
-                        android:contentDescription="Toggle password visibility"
+                        android:contentDescription="@string/desc_toggle_password"
                         android:focusable="true"
                         android:src="@drawable/ic_eye"
                         app:tint="#9A9A9E" />
@@ -419,6 +427,7 @@
                         android:background="@drawable/bg_input_field"
                         android:hint="@string/password"
                         android:inputType="textPassword"
+                        android:autofillHints="password"
                         android:paddingStart="14dp"
                         android:paddingEnd="44dp"
                         android:singleLine="true"
@@ -433,7 +442,7 @@
                         android:layout_gravity="center_vertical|end"
                         android:layout_marginEnd="14dp"
                         android:clickable="true"
-                        android:contentDescription="Toggle confirm password visibility"
+                        android:contentDescription="@string/desc_toggle_confirm_password"
                         android:focusable="true"
                         android:src="@drawable/ic_eye"
                         app:tint="#9A9A9E" />
@@ -445,6 +454,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:baselineAligned="false"
                     android:orientation="horizontal">
 
                     <com.google.android.material.checkbox.MaterialCheckBox

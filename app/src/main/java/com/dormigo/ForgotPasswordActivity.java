@@ -45,13 +45,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         // Send Reset Link Logic
         btnSendResetLink.setOnClickListener(v -> {
-            String email = emailInput.getText().toString();
+            String email = emailInput.getText().toString().trim();
             if (email.isEmpty()) {
                 Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Reset link sent to " + email, Toast.LENGTH_SHORT).show();
-                // Here you would normally call an API to send the reset link
+                return;
             }
+            Toast.makeText(this, "Reset link sent to " + email, Toast.LENGTH_SHORT).show();
+            // Here you would normally call an API to send the reset link
         });
     }
 }
