@@ -1,3 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dormigo</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="sign_in">Sign in</string>
+    <string name="new_here">New here? </string>
+    <string name="create_account">Create an account</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="full_name">Full name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="school_email">School email</string>
+    <string name="school_campus">School / campus</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="i_am_a_student">I\'m a student</string>
+    <string name="i_am_a_landlord">I\'m a landlord</string>
+    <string name="search_and_inquire">Search and inquire</string>
+    <string name="list_and_manage_rooms">List and manage rooms</string>
+    <string name="looking_for_a_room">Looking for a room</string>
+    <string name="renting_out_rooms">Renting out rooms</string>
+    <string name="terms_agreement">I agree to the BH Finder terms of use and house-rules policy.</string>
+    <string name="upload_files_desc">Upload Business Permit and 1 Valid ID</string>
+    <string name="click_to_upload">Click to upload</string>
+    <string name="remembered_password">Remembered your password? </string>
+    <string name="send_reset_link">Send reset link</string>
+    <string name="find_boarding_house">Find your next boarding house.</string>
+    <string name="every_listing_near_campus">Every listing near campus in one place — rent, room type, and what\'s still available.</string>
+    <string name="sign_in_as">Sign in as</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="save_houses_desc">Save houses, compare rent, and send booking requests in one place.</string>
+    <string name="i_am_signing_up_as">I am signing up as</string>
+    <string name="post_available_rooms">Post your available rooms and keep their availability up to date.</string>
+    <string name="forgot_password_desc">Enter the email linked to your account and we\'ll send you a code to reset your password.</string>
+    <string name="middle_name_optional">Middle Name (Optional)</string>
+    <string name="school_campus_hint">School / Campus</string>
+    <string name="mobile_number_hint">123456789</string>
 </resources>

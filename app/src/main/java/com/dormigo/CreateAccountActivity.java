@@ -1,8 +1,11 @@
 package com.dormigo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Objects;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
@@ -38,6 +43,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
 
         // Initialize UI components
+        LinearLayout btnBack = findViewById(R.id.btnBack);
         LinearLayout roleStudent = findViewById(R.id.roleStudent);
         LinearLayout roleLandlord = findViewById(R.id.roleLandlord);
         ImageView togglePasswordVisibility = findViewById(R.id.togglePasswordVisibility);
@@ -45,6 +51,19 @@ public class CreateAccountActivity extends AppCompatActivity {
         EditText passwordInput = findViewById(R.id.passwordInput);
         EditText confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         TextView btnCreateAccount = findViewById(R.id.btnCreateAccount);
+        AutoCompleteTextView schoolCampusInput = findViewById(R.id.schoolCampusInput);
+        TextView signInLink = findViewById(R.id.signInLink);
+
+        // Back Button Logic
+        btnBack.setOnClickListener(v -> finish());
+
+        // Sign In Link Logic
+        signInLink.setOnClickListener(v -> finish());
+
+        // Dropdown Logic
+        String[] schoolOptions = getResources().getStringArray(R.array.school_campus_options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, schoolOptions);
+        schoolCampusInput.setAdapter(adapter);
 
         // Role Selection Logic
         roleStudent.setOnClickListener(v -> {
@@ -55,17 +74,20 @@ public class CreateAccountActivity extends AppCompatActivity {
         roleLandlord.setOnClickListener(v -> {
             isStudent = false;
             updateRoleUI(roleStudent, roleLandlord);
+            Intent intent = new Intent(this, LandlordRegistrationActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         // Password Visibility Logic
         togglePasswordVisibility.setOnClickListener(v -> {
             isPasswordVisible = !isPasswordVisible;
-            togglePassword(passwordInput, togglePasswordVisibility, isPasswordVisible);
+            togglePassword(passwordInput, isPasswordVisible);
         });
 
         toggleConfirmPasswordVisibility.setOnClickListener(v -> {
             isConfirmPasswordVisible = !isConfirmPasswordVisible;
-            togglePassword(confirmPasswordInput, toggleConfirmPasswordVisibility, isConfirmPasswordVisible);
+            togglePassword(confirmPasswordInput, isConfirmPasswordVisible);
         });
 
         // Create Account Logic
@@ -73,7 +95,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             String pass = passwordInput.getText().toString();
             String confirmPass = confirmPasswordInput.getText().toString();
 
-            if (!pass.equals(confirmPass)) {
+            if (!Objects.equals(pass, confirmPass)) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             } else {
                 String role = isStudent ? "Student" : "Landlord";
@@ -83,7 +105,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
     }
 
-    private void togglePassword(EditText editText, ImageView imageView, boolean visible) {
+    private void togglePassword(EditText editText, boolean visible) {
         if (visible) {
             editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         } else {

@@ -28,10 +28,14 @@
 
                 <!-- Logo row -->
                 <LinearLayout
+                    android:id="@+id/btnBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
 
                     <ImageView
                         android:layout_width="36dp"
@@ -46,10 +50,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:text="BH Finder"
+                        android:text="@string/app_name"
                         android:textColor="#1A1A1A"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.02" />
 
                 </LinearLayout>
 
@@ -58,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Create your account"
+                    android:text="@string/create_your_account"
                     android:textColor="#1A1A1A"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -68,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:lineSpacingExtra="2dp"
-                    android:text="Save houses, compare rent, and send booking requests in one place."
+                    android:text="@string/save_houses_desc"
                     android:textColor="#6E6E73"
                     android:textSize="14sp" />
 
@@ -77,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="I am signing up as"
+                    android:text="@string/i_am_signing_up_as"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -112,7 +117,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="I'm a student"
+                android:text="@string/i_am_a_student"
                             android:textColor="#1A1A1A"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -121,7 +126,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Looking for a room"
+                android:text="@string/looking_for_a_room"
                             android:textColor="#6E6E73"
                             android:textSize="12sp" />
 
@@ -151,7 +156,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="I'm a landlord"
+                android:text="@string/i_am_a_landlord"
                             android:textColor="#1A1A1A"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -160,7 +165,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Renting out rooms"
+                android:text="@string/renting_out_rooms"
                             android:textColor="#6E6E73"
                             android:textSize="12sp" />
 
@@ -185,7 +190,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="First Name"
+                            android:text="@string/first_name"
                             android:textColor="#1A1A1A"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -196,7 +201,7 @@
                             android:layout_height="50dp"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/bg_input_field"
-                            android:hint="First Name"
+                            android:hint="@string/first_name"
                             android:inputType="textPersonName"
                             android:paddingHorizontal="14dp"
                             android:singleLine="true"
@@ -216,7 +221,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last Name"
+                            android:text="@string/last_name"
                             android:textColor="#1A1A1A"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -227,7 +232,7 @@
                             android:layout_height="50dp"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/bg_input_field"
-                            android:hint="Last Name"
+                            android:hint="@string/last_name"
                             android:inputType="textPersonName"
                             android:paddingHorizontal="14dp"
                             android:singleLine="true"
@@ -244,7 +249,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Middle Name"
+                    android:text="@string/middle_name"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -255,7 +260,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input_field"
-                    android:hint="Middle Name (Optional)"
+                    android:hint="@string/middle_name_optional"
                     android:inputType="textPersonName"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
@@ -268,7 +273,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="School email"
+                    android:text="@string/school_email"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -279,7 +284,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input_field"
-                    android:hint="School Email"
+                    android:hint="@string/school_email"
                     android:inputType="textEmailAddress"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
@@ -292,44 +297,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="School / campus"
+                    android:text="@string/school_campus"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <FrameLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/schoolCampusLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_input_field">
+                    app:boxBackgroundColor="#FFFFFF"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeColor="#DDDDDD"
+                    app:hintEnabled="false">
 
-                    <Spinner
-                        android:id="@+id/schoolCampusSpinner"
+                    <AutoCompleteTextView
+                        android:id="@+id/schoolCampusInput"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:entries="@array/school_campus_options"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="40dp"
-                        android:spinnerMode="dropdown" />
+                        android:layout_height="50dp"
+                        android:hint="@string/school_campus_hint"
+                        android:inputType="none"
+                        android:paddingHorizontal="14dp"
+                        android:textColor="#1A1A1A"
+                        android:textColorHint="#9A9A9E"
+                        android:textSize="14sp" />
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_marginEnd="14dp"
-                        android:contentDescription="Open dropdown"
-                        android:src="@drawable/ic_chevron_down"
-                        app:tint="#1B5E4C" />
-
-                </FrameLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Contact number -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Contact Number"
+                    android:text="@string/contact_number"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -340,7 +346,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input_field"
-                    android:hint="123456789"
+                    android:hint="@string/mobile_number_hint"
                     android:inputType="phone"
                     android:paddingHorizontal="14dp"
                     android:singleLine="true"
@@ -353,7 +359,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Password"
+                    android:text="@string/password"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -368,7 +374,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:inputType="textPassword"
                         android:paddingStart="14dp"
                         android:paddingEnd="44dp"
@@ -396,7 +402,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Confirm password"
+                    android:text="@string/confirm_password"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -411,7 +417,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Password"
+                        android:hint="@string/password"
                         android:inputType="textPassword"
                         android:paddingStart="14dp"
                         android:paddingEnd="44dp"
@@ -441,12 +447,14 @@
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
-                    <CheckBox
+                    <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/termsCheckbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:buttonTint="#1B5E4C" />
+                        app:buttonTint="@color/checkbox_tint"
+                        app:checkedIconTint="@android:color/white"
+                        app:useMaterialThemeColors="false" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -454,7 +462,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_weight="1"
                         android:lineSpacingExtra="2dp"
-                        android:text="I agree to the BH Finder terms of use and house-rules policy."
+                        android:text="@string/terms_agreement"
                         android:textColor="#6E6E73"
                         android:textSize="13sp" />
 
@@ -470,15 +478,44 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text="Create account"
+                    android:text="@string/create_account"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
+
+                <!-- Sign in link -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                    android:text="@string/already_have_account"
+                        android:textColor="#6E6E73"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/signInLink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                    android:text="@string/sign_in"
+                        android:textColor="#1B5E4C"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

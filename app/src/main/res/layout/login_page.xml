@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F6F5">
@@ -43,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="DORMIGO"
+                    android:text="@string/app_name"
                     android:textColor="#1A1A1A"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -51,12 +52,11 @@
 
             </LinearLayout>
 
-            <!-- Headline -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:text="Find your next boarding house."
+                android:text="@string/find_boarding_house"
                 android:textColor="#1A1A1A"
                 android:textSize="28sp"
                 android:textStyle="bold"
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Every listing near campus in one place — rent, room type, and what's still available."
+                android:text="@string/every_listing_near_campus"
                 android:textColor="#6E6E73"
                 android:textSize="14sp"
                 android:lineSpacingExtra="2dp" />
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:text="Sign in as"
+                android:text="@string/sign_in_as"
                 android:textColor="#1A1A1A"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="I'm a student"
+                android:text="@string/i_am_a_student"
                         android:textColor="#1A1A1A"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -120,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Search and inquire"
+                android:text="@string/search_and_inquire"
                         android:textColor="#6E6E73"
                         android:textSize="12sp" />
 
@@ -130,27 +130,27 @@
                 <LinearLayout
                     android:id="@+id/roleLandlord"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
-                    android:orientation="vertical"
-                    android:padding="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_role_unselected"
                     android:clickable="true"
                     android:focusable="true"
-                    android:background="@drawable/bg_role_unselected">
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
+                        android:contentDescription="Landlord"
                         android:src="@drawable/ic_key"
-                        app:tint="#6E6E73"
-                        android:contentDescription="Landlord" />
+                        app:tint="#6E6E73" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="I'm a landlord"
+                android:text="@string/i_am_a_landlord"
                         android:textColor="#1A1A1A"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -159,7 +159,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="List and manage rooms"
+                android:text="@string/list_and_manage_rooms"
                         android:textColor="#6E6E73"
                         android:textSize="12sp" />
 
@@ -172,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Email"
+                android:text="@string/email"
                 android:textColor="#1A1A1A"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -183,7 +183,7 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_input_field"
-                android:hint="Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="14dp"
                 android:textColor="#1A1A1A"
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="Password"
+                    android:text="@string/password"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -213,7 +213,7 @@
                     android:layout_alignParentEnd="true"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="Forgot password?"
+                    android:text="@string/forgot_password"
                     android:textColor="#1B5E4C"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -230,7 +230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_input_field"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
                     android:paddingStart="14dp"
                     android:paddingEnd="44dp"
@@ -263,7 +263,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="Sign in"
+                android:text="@string/sign_in"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp"
@@ -280,7 +280,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New here? "
+                    android:text="@string/new_here"
                     android:textColor="#6E6E73"
                     android:textSize="14sp" />
 
@@ -290,7 +290,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="Create an account"
+                    android:text="@string/create_account"
                     android:textColor="#1B5E4C"
                     android:textSize="14sp"
                     android:textStyle="bold" />
