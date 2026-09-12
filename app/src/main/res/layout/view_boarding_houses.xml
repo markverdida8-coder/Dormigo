@@ -658,16 +658,26 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/locationCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_card_rounded"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:orientation="vertical">
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:background="@drawable/bg_map_placeholder">
+
+                        <ImageView
+                            android:id="@+id/imgStaticMap"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/location" />
 
                         <ImageView
                             android:layout_width="40dp"
@@ -702,8 +712,11 @@
                             android:textSize="13sp" />
 
                         <LinearLayout
+                            android:id="@+id/btnDirections"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 

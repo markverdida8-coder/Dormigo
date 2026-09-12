@@ -73,6 +73,11 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
         TextView btnCreateAccount = findViewById(R.id.btnCreateAccount);
         TextView signInLink = findViewById(R.id.signInLink);
 
+        EditText fullNameInput = findViewById(R.id.fullNameInput);
+        EditText emailInput = findViewById(R.id.emailInput);
+        EditText mobileNumberInput = findViewById(R.id.mobileNumberInput);
+        com.google.android.material.checkbox.MaterialCheckBox termsCheckbox = findViewById(R.id.termsCheckbox);
+
         // Back Button Logic
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> {
@@ -122,15 +127,20 @@ public class LandlordRegistrationActivity extends AppCompatActivity {
         // Create Account Logic
         if (btnCreateAccount != null) {
             btnCreateAccount.setOnClickListener(v -> {
+                String fullName = fullNameInput.getText().toString().trim();
+                String email = emailInput.getText().toString().trim();
+                String mobile = mobileNumberInput.getText().toString().trim();
                 String pass = passwordInput.getText().toString();
                 String confirmPass = confirmPasswordInput.getText().toString();
 
-                if (pass.isEmpty()) {
-                    Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+                if (fullName.isEmpty() || email.isEmpty() || mobile.isEmpty() || pass.isEmpty()) {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else if (!Objects.equals(pass, confirmPass)) {
                     Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                 } else if (uploadedFileUri == null) {
                     Toast.makeText(this, "Please upload the required documents", Toast.LENGTH_SHORT).show();
+                } else if (!termsCheckbox.isChecked()) {
+                    Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Landlord account created successfully!", Toast.LENGTH_SHORT).show();
                     

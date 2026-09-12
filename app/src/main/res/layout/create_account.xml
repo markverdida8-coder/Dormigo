@@ -278,7 +278,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/school_email"
+                    android:text="@string/email"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -289,7 +289,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_input_field"
-                    android:hint="@string/school_email"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:autofillHints="emailAddress"
                     android:paddingHorizontal="14dp"

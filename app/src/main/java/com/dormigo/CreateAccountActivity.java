@@ -55,6 +55,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         AutoCompleteTextView schoolCampusInput = findViewById(R.id.schoolCampusInput);
         TextView signInLink = findViewById(R.id.signInLink);
 
+        EditText firstNameInput = findViewById(R.id.firstNameInput);
+        EditText lastNameInput = findViewById(R.id.lastNameInput);
+        EditText schoolEmailInput = findViewById(R.id.schoolEmailInput);
+        EditText contactNumberInput = findViewById(R.id.contactNumberInput);
+        com.google.android.material.checkbox.MaterialCheckBox termsCheckbox = findViewById(R.id.termsCheckbox);
+
         // Back Button Logic
         btnBack.setOnClickListener(v -> {
             finish();
@@ -100,11 +106,21 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // Create Account Logic
         btnCreateAccount.setOnClickListener(v -> {
+            String firstName = firstNameInput.getText().toString().trim();
+            String lastName = lastNameInput.getText().toString().trim();
+            String email = schoolEmailInput.getText().toString().trim();
+            String school = schoolCampusInput.getText().toString().trim();
+            String contact = contactNumberInput.getText().toString().trim();
             String pass = passwordInput.getText().toString();
             String confirmPass = confirmPasswordInput.getText().toString();
 
-            if (!Objects.equals(pass, confirmPass)) {
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || 
+                school.isEmpty() || contact.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            } else if (!Objects.equals(pass, confirmPass)) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
+            } else if (!termsCheckbox.isChecked()) {
+                Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show();
             } else {
                 String role = isStudent ? "Student" : "Landlord";
                 Toast.makeText(this, "Account created as " + role, Toast.LENGTH_SHORT).show();
